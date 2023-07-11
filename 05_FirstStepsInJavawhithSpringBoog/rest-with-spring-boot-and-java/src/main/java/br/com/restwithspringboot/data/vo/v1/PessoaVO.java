@@ -1,42 +1,24 @@
-package br.com.restwithspringboot.model;
+package br.com.restwithspringboot.data.vo.v1;
 
-import java.io.Serializable;
+public class PessoaVO {
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-
-@Entity
-@Table(name = "pessoa")
-public class Pessoa implements Serializable{
-	private static final long serialVersionUID = 1L;
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@Column(nullable = false, length = 80)
 	private String nome;
 	
-	@Column(nullable = false, length = 80)
 	private String sobrenome;
 	
-	@Column(nullable = false, length = 9)
 	private String genero;
 	
-	@Column(nullable = false, length = 100)
 	private String endereco;
 	
 	
-	public Pessoa() {}
+	public PessoaVO() {}
 	
 	
 	
 
-	public Pessoa(Long id, String nome, String sobrenome, String genero, String endereco) {
+	public PessoaVO(Long id, String nome, String sobrenome, String genero, String endereco) {
 		super();
 		this.id = id;
 		this.nome = nome;
@@ -110,7 +92,7 @@ public class Pessoa implements Serializable{
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Pessoa other = (Pessoa) obj;
+		PessoaVO other = (PessoaVO) obj;
 		if (endereco == null) {
 			if (other.endereco != null)
 				return false;
@@ -138,9 +120,4 @@ public class Pessoa implements Serializable{
 			return false;
 		return true;
 	}
-
-
-	
-	
-	
 }

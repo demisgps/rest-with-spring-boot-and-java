@@ -2,13 +2,15 @@ package br.com.restwithspringboot.services;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicLong;
 import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import br.com.restwithspringboot.data.vo.v1.PessoaVO;
 import br.com.restwithspringboot.exceptions.ResourceNotFoundException;
+import br.com.restwithspringboot.mapper.MapperPessoaToPessoaVO;
+import br.com.restwithspringboot.mapper.MapperPessoaVOToPessoa;
 import br.com.restwithspringboot.model.Pessoa;
 import br.com.restwithspringboot.repositories.PessoaRepository;
 
@@ -18,30 +20,33 @@ public class PessoaService {
 	@Autowired
 	private PessoaRepository pessoaRepository;
 
-	private final AtomicLong counter = new AtomicLong();
 	private Logger logger = Logger.getLogger(PessoaService.class.getName());
 	
-	public Pessoa findById(Long id) {
+	
+	public PessoaVO findById(Long id) {
 		logger.info("Procurando pessoa...");
+
+		var entidadePessoa = pessoaRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Nenhum valor encontrado..."));
 		
-		Pessoa pessoa = new Pessoa();
-		pessoa.setId(counter.incrementAndGet());
-		pessoa.setNome("Demis");
-		pessoa.setSobrenome("Goulart");
-		pessoa.setGenero("masculino");
-		pessoa.setEndereco("Rua xxxxxx, número 9999, Franca - SP");
-		return pessoaRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Nenhum valor encontrado..."));
+		var vo = MapperPessoaToPessoaVO.pessoaToPessoaVO(entidadePessoa);
+		
+		return vo;
 	}
 	
 	
-	public Pessoa create(Pessoa pessoa) {
+	public PessoaVO create(PessoaVO pessoaVo) {
 		logger.info("Criando pessoa...");
 		
-		return pessoaRepository.save(pessoa);
+		Pessoa pessoaEntidade = MapperPessoaVOToPessoa.pessoaVoToPessoa(pessoaVo);
+		
+		var vo = MapperPessoaToPessoaVO.pessoaToPessoaVO(pessoaRepository.save(pessoaEntidade));
+		 
+		 return vo;
+		
 	}
 	
 	
-	public Pessoa update(Pessoa pessoa) {
+	public PessoaVO update(PessoaVO pessoa) {
 		logger.info("Atualizando pessoa...");
 		
 		var pessoaEncontrada = pessoaRepository.findById(pessoa.getId()).orElseThrow(() -> new ResourceNotFoundException("Nenhum valor encontrado..."));
@@ -51,9 +56,9 @@ public class PessoaService {
 		pessoaEncontrada.setGenero(pessoa.getGenero());
 		pessoaEncontrada.setEndereco(pessoa.getEndereco());
 		
-		pessoaRepository.save(pessoaEncontrada);
+		var vo = MapperPessoaToPessoaVO.pessoaToPessoaVO(pessoaRepository.save(pessoaEncontrada));
 		
-		return pessoa;
+		return vo;
 	}
 	
 	public void delete(Long id) {
@@ -65,12 +70,22 @@ public class PessoaService {
 	}
 	
 	
-	public List<Pessoa> findAll() {
+	public List<PessoaVO> findAll() {
 		logger.info("Procurando pessoas...");
 		List<Pessoa> pessoas = new ArrayList<>();
 		pessoas = pessoaRepository.findAll();
-		return pessoas;
+		
+		List<PessoaVO> listVo = new ArrayList<>();
+		
+		for (Pessoa pessoa : pessoas) {
+			PessoaVO pessoaVO = new PessoaVO(pessoa.getId(), pessoa.getNome(), pessoa.getSobrenome(), pessoa.getEndereco(), pessoa.getGenero());
+			listVo.add(pessoaVO);
+		}
+		
+		return listVo;
+		
 	}
+	
 
 	
 }
