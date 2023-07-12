@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import br.com.restwithspringboot.data.vo.v1.PessoaVO;
 import br.com.restwithspringboot.data.vo.v2.PessoaVOV2;
 import br.com.restwithspringboot.exceptions.ResourceNotFoundException;
-import br.com.restwithspringboot.mapper.vo1.MapperComModelMapper;
 import br.com.restwithspringboot.mapper.vo1.MapperPessoaToPessoaVO;
 import br.com.restwithspringboot.mapper.vo1.MapperPessoaVOToPessoa;
 import br.com.restwithspringboot.mapper.vo2.MapperPessoaToVo2;
