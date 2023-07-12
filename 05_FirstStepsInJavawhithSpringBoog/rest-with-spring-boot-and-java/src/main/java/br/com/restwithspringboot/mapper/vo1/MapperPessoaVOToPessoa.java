@@ -1,4 +1,4 @@
-package br.com.restwithspringboot.mapper;
+package br.com.restwithspringboot.mapper.vo1;
 
 import br.com.restwithspringboot.data.vo.v1.PessoaVO;
 import br.com.restwithspringboot.model.Pessoa;

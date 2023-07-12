@@ -1,11 +1,13 @@
-package br.com.restwithspringboot.mapper;
+package br.com.restwithspringboot.mapper.vo1;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.modelmapper.ModelMapper;
+
 
 public class MapperComModelMapper {
 
-	private static org.modelmapper.ModelMapper mapper;
+	private static ModelMapper mapper;
 	
 	
 	public static <O, D> D parseObject(O origin, Class<D> destination) {

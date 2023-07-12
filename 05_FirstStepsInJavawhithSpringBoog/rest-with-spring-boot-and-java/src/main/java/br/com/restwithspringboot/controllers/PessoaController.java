@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.restwithspringboot.data.vo.v1.PessoaVO;
+import br.com.restwithspringboot.data.vo.v2.PessoaVOV2;
 import br.com.restwithspringboot.services.PessoaService;
 
 
@@ -38,9 +39,15 @@ public class PessoaController {
 		return pessoaService.findAll();
 	}
 	
-	@PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping( produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public PessoaVO create(@RequestBody PessoaVO pessoa) {
 		return pessoaService.create(pessoa);
+	}
+	
+	
+	@PostMapping(value = "/v2" , produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public PessoaVOV2 createV2(@RequestBody PessoaVOV2 pessoaVo2) {
+		return pessoaService.createV2(pessoaVo2);
 	}
 	
 	@PutMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -53,11 +60,6 @@ public class PessoaController {
 		pessoaService.delete(id);
 		return ResponseEntity.noContent().build();
 	}
-	
-	
-	
-	
-
 	
 	
 }

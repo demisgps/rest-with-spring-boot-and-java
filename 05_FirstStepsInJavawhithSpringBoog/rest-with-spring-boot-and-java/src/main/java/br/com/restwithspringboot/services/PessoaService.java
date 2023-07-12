@@ -8,9 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.restwithspringboot.data.vo.v1.PessoaVO;
+import br.com.restwithspringboot.data.vo.v2.PessoaVOV2;
 import br.com.restwithspringboot.exceptions.ResourceNotFoundException;
-import br.com.restwithspringboot.mapper.MapperPessoaToPessoaVO;
-import br.com.restwithspringboot.mapper.MapperPessoaVOToPessoa;
+import br.com.restwithspringboot.mapper.vo1.MapperComModelMapper;
+import br.com.restwithspringboot.mapper.vo1.MapperPessoaToPessoaVO;
+import br.com.restwithspringboot.mapper.vo1.MapperPessoaVOToPessoa;
+import br.com.restwithspringboot.mapper.vo2.MapperPessoaToVo2;
 import br.com.restwithspringboot.model.Pessoa;
 import br.com.restwithspringboot.repositories.PessoaRepository;
 
@@ -19,7 +22,7 @@ public class PessoaService {
 	
 	@Autowired
 	private PessoaRepository pessoaRepository;
-
+	
 	private Logger logger = Logger.getLogger(PessoaService.class.getName());
 	
 	
@@ -46,6 +49,20 @@ public class PessoaService {
 	}
 	
 	
+	public PessoaVOV2 createV2(PessoaVOV2 pessoaVo2) {
+		logger.info("Criando pessoa... (versão 2)");
+		
+		Pessoa pessoaEntidade = MapperPessoaToVo2.mapperVoV2ToPessoa(pessoaVo2);
+		
+		
+		var vo2 = MapperPessoaToVo2.mapperPessoaToVoV2(pessoaRepository.save(pessoaEntidade));
+		
+		 
+		 return vo2;
+		
+	}
+	
+	
 	public PessoaVO update(PessoaVO pessoa) {
 		logger.info("Atualizando pessoa...");
 		
@@ -55,6 +72,7 @@ public class PessoaService {
 		pessoaEncontrada.setSobrenome(pessoa.getSobrenome());
 		pessoaEncontrada.setGenero(pessoa.getGenero());
 		pessoaEncontrada.setEndereco(pessoa.getEndereco());
+		
 		
 		var vo = MapperPessoaToPessoaVO.pessoaToPessoaVO(pessoaRepository.save(pessoaEncontrada));
 		
