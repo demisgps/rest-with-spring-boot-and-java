@@ -1,13 +1,24 @@
 package br.com.restwithspringboot.data.vo.v1;
 
-public class PessoaVO {
+import java.io.Serializable;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+
+
+@JsonPropertyOrder({"id", "endereco", "genero", "nome", "sobrenome"})//linha para alterar a ordem de exibição do json
+public class PessoaVO implements Serializable {
+	private static final long serialVersionUID = 1L;
 
 	private Long id;
 	
+	//@JsonProperty("primeiro_nome") //comando para alterar a exibição do json
 	private String nome;
 	
 	private String sobrenome;
 	
+	//@JsonIgnore // comando para não exibir o json na exibição
 	private String genero;
 	
 	private String endereco;

@@ -21,7 +21,7 @@ import br.com.restwithspringboot.services.PessoaService;
 
 
 @RestController
-@RequestMapping("/pessoa")
+@RequestMapping("/pessoa/v1")
 public class PessoaController {
 	
 	
@@ -29,28 +29,28 @@ public class PessoaController {
 	private PessoaService pessoaService;
 
 	
-	@GetMapping(value = "/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value = "/{id}",produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE} )
 	public PessoaVO findById(@PathVariable(value = "id") Long id) {
 		return pessoaService.findById(id);
 	}
 	
-	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
 	public List<PessoaVO> findAll() {
 		return pessoaService.findAll();
 	}
 	
-	@PostMapping( produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping( produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
 	public PessoaVO create(@RequestBody PessoaVO pessoa) {
 		return pessoaService.create(pessoa);
 	}
 	
 	
-	@PostMapping(value = "/v2" , produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(value = "/v2" , produces ={MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public PessoaVOV2 createV2(@RequestBody PessoaVOV2 pessoaVo2) {
 		return pessoaService.createV2(pessoaVo2);
 	}
 	
-	@PutMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+	@PutMapping(produces ={MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public PessoaVO update(@RequestBody PessoaVO pessoa) {
 		return pessoaService.update(pessoa);
 	}
