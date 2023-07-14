@@ -1,5 +1,8 @@
 package br.com.restwithspringboot.services;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -7,6 +10,7 @@ import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import br.com.restwithspringboot.controllers.PessoaController;
 import br.com.restwithspringboot.data.vo.v1.PessoaVO;
 import br.com.restwithspringboot.data.vo.v2.PessoaVOV2;
 import br.com.restwithspringboot.exceptions.ResourceNotFoundException;
@@ -32,6 +36,8 @@ public class PessoaService {
 		
 		var vo = MapperPessoaToPessoaVO.pessoaToPessoaVO(entidadePessoa);
 		
+		vo.add(linkTo(methodOn(PessoaController.class).findById(id)).withSelfRel());
+		
 		return vo;
 	}
 	
@@ -42,6 +48,8 @@ public class PessoaService {
 		Pessoa pessoaEntidade = MapperPessoaVOToPessoa.pessoaVoToPessoa(pessoaVo);
 		
 		var vo = MapperPessoaToPessoaVO.pessoaToPessoaVO(pessoaRepository.save(pessoaEntidade));
+		
+		vo.add(linkTo(methodOn(PessoaController.class).findById(vo.getKey())).withSelfRel());
 		 
 		 return vo;
 		
@@ -65,7 +73,7 @@ public class PessoaService {
 	public PessoaVO update(PessoaVO pessoa) {
 		logger.info("Atualizando pessoa...");
 		
-		var pessoaEncontrada = pessoaRepository.findById(pessoa.getId()).orElseThrow(() -> new ResourceNotFoundException("Nenhum valor encontrado..."));
+		var pessoaEncontrada = pessoaRepository.findById(pessoa.getKey()).orElseThrow(() -> new ResourceNotFoundException("Nenhum valor encontrado..."));
 		
 		pessoaEncontrada.setNome(pessoa.getNome());
 		pessoaEncontrada.setSobrenome(pessoa.getSobrenome());
@@ -74,6 +82,8 @@ public class PessoaService {
 		
 		
 		var vo = MapperPessoaToPessoaVO.pessoaToPessoaVO(pessoaRepository.save(pessoaEncontrada));
+		
+		vo.add(linkTo(methodOn(PessoaController.class).findById(vo.getKey())).withSelfRel());
 		
 		return vo;
 	}
@@ -99,6 +109,7 @@ public class PessoaService {
 			listVo.add(pessoaVO);
 		}
 		
+		listVo.stream().forEach(p -> p.add(linkTo(methodOn(PessoaController.class).findById(p.getKey())).withSelfRel()));
 		return listVo;
 		
 	}

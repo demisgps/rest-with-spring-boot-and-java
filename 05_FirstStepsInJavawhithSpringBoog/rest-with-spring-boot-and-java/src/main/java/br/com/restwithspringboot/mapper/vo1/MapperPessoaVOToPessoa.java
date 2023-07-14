@@ -10,7 +10,7 @@ public class MapperPessoaVOToPessoa {
 	public static Pessoa pessoaVoToPessoa(PessoaVO vo) {
 		
 		return new Pessoa(
-				vo.getId(),
+				vo.getKey(),
 				vo.getNome(),
 				vo.getSobrenome(),
 				vo.getGenero(),
