@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import br.com.restwithspringboot.controllers.PessoaController;
 import br.com.restwithspringboot.data.vo.v1.PessoaVO;
 import br.com.restwithspringboot.data.vo.v2.PessoaVOV2;
+import br.com.restwithspringboot.exceptions.RequiredObjectIsNullException;
 import br.com.restwithspringboot.exceptions.ResourceNotFoundException;
 import br.com.restwithspringboot.mapper.vo1.MapperPessoaToPessoaVO;
 import br.com.restwithspringboot.mapper.vo1.MapperPessoaVOToPessoa;
@@ -42,7 +43,10 @@ public class PessoaService {
 	}
 	
 	
-	public PessoaVO create(PessoaVO pessoaVo) {
+	public PessoaVO create(PessoaVO pessoaVo){
+		
+		if(pessoaVo == null) throw new RequiredObjectIsNullException();
+		
 		logger.info("Criando pessoa...");
 		
 		Pessoa pessoaEntidade = MapperPessoaVOToPessoa.pessoaVoToPessoa(pessoaVo);
@@ -71,6 +75,9 @@ public class PessoaService {
 	
 	
 	public PessoaVO update(PessoaVO pessoa) {
+		
+		if(pessoa == null) throw new RequiredObjectIsNullException();
+		
 		logger.info("Atualizando pessoa...");
 		
 		var pessoaEncontrada = pessoaRepository.findById(pessoa.getKey()).orElseThrow(() -> new ResourceNotFoundException("Nenhum valor encontrado..."));
